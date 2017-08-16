@@ -23,9 +23,9 @@ passport = str(random.randrange(1000000000, 1999999999))
 
 class Application:
     def __init__(self):
-        #self.binary = FirefoxBinary('/Users/vvperepelkin/desktop/Firefox.app/Contents/MacOS/firefox')
-        #self.wd = webdriver.Firefox(firefox_binary=self.binary)
-        self.wd = webdriver.Chrome()
+        self.binary = FirefoxBinary('/Users/vvperepelkin/desktop/Firefox.app/Contents/MacOS/firefox')
+        self.wd = webdriver.Firefox(firefox_binary=self.binary)
+        #self.wd = webdriver.Chrome()
         self.wd.delete_all_cookies()
         self.wd.maximize_window()
         self.wait = WebDriverWait(self.wd, 60)
@@ -51,3 +51,12 @@ class Application:
         time.sleep(2)
         wd.find_element_by_class_name('default').click()
         print("Осуществлен вход под " + user)
+
+    @allure.step('Закрытие браузера')
+    def finish(self):
+        self.wd.quit()
+
+    @allure.step('Ожидание загрузки страницы')
+    def wait_overlay(self):
+        wd = self.wd
+        WebDriverWait(wd, 30).until_not(EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#overlay')))

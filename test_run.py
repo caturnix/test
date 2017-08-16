@@ -7,4 +7,4 @@ import allure
 def test_create_deal(app):
         app.open_login_page()
         app.login('abc@gmail.com', 'password')
-        app.logout()
+       
